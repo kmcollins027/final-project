@@ -1,0 +1,30 @@
+
+{% extends "shop/layout.html" %}
+{% load static %}
+ 
+{% block main %}
+
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Create New Item Category</h1>
+            <!-- <p class="lead fw-normal text-white-50 mb-0">Probably don't need</p> -->
+        </div>
+    </div>
+</header>
+
+<center>
+    <p class="pads"></p>
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <p class="pads"></p>
+    <input type="submit" value="Submit">
+    <input value="Cancel" type="button" onclick=location.href="{% url 'categories' %}">
+    </form>
+    <p class="pads"></p>
+</center>
+{% endblock %}

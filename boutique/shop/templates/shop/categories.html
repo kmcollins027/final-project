@@ -1,0 +1,47 @@
+{% extends "shop/layout.html" %}
+
+{% block main %}
+
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Categories</h1>
+            <button onclick=location.href="{% url 'create-category' %}">
+                New Category
+            </button>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+ <!-- Product section-->
+ {% if categories %}
+ {% for c in categories %}
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            {% if c.image %}
+            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ c.image.url }}" alt="..." /></div>
+            {% endif %}
+            <div class="col-md-6">
+                <h1 class="display-5 fw-bolder">{{c.title}}</h1>
+                <div class="fs-5 mb-5">
+                    <span><a class="text-decoration-none" style="font-size:150%;" href="{% url 'category' c.id %}">{{ c.name }}</a></span>
+                </div>
+                <!-- <p class="lead">Description</p> -->
+            </div>
+        </div>
+    </div>
+</section>
+{% endfor %}
+{% else %}
+<section>
+    <h4>No Categories Yet</h4>
+</section>
+{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "shop/layout.html" %}
+
+{% block main %}
+
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Create New Item</h1>
+            <!-- <p class="lead fw-normal text-white-50 mb-0">Probably don't need</p> -->
+        </div>
+    </div>
+</header>
+
+    <center>
+    {% for m in messages %}
+        <h2 class="{{m.tags}}">{{m}}</h2>
+    {% endfor %}
+
+    <p class="pads"></p>
+    
+    <form action="{% url 'create-item' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+            <input type="submit" name="cancel" value="Cancel" formnovalidate="formnovalidate">
+            <input type="reset" name="reset" value="Reset">
+            <input type="submit" name="submit" value="Create Item">
+        </div>
+    </form>
+    </center>
+    <p class="pads"></p>
+{% endblock %}

@@ -1,0 +1,25 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Password reset on 127.0.0.1:8000
+From: webmaster@localhost
+To: kmcollins027@gmail.com
+Date: Thu, 01 Dec 2022 19:26:02 -0000
+Message-ID: <166992276202.76072.6276670540271653889@DESKTOP-SR827Q8.gci.net>
+
+
+You're receiving this email because you requested a password reset for your user account at 127.0.0.1:8000.
+
+Please go to the following page and choose a new password:
+
+http://127.0.0.1:8000/reset/MQ/bfr0ze-9cfbeffb519b33728fcf1b94c40c71cf/
+
+Your username, in case you’ve forgotten: kevin
+
+Thanks for using our site!
+
+The 127.0.0.1:8000 team
+
+
+
+-------------------------------------------------------------------------------
