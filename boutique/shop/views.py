@@ -23,7 +23,17 @@ class ItemView(ListView):
     context_object_name = "items"
 
     def get_queryset(self):
-        return Item.objects.all().order_by('-created_at')
+        if 'sorted' in self.request.GET:
+            choice = self.request.GET['sorted']
+            if choice == 'price_sorted_low':
+                return Item.objects.all().order_by('price')
+            if choice == 'price_sorted_high':
+                return Item.objects.all().order_by('-price')
+            if choice == 'name_sorted_A':
+                return Item.objects.all().order_by('title')
+            if choice == 'name_sorted_Z':
+                return Item.objects.all().order_by('-title')
+        return Item.objects.all()
 
     def get_context_data(self):
         context = super().get_context_data()
@@ -154,6 +164,7 @@ def item(request, item_id):
 
 def review(request):
     return render(request, "shop/review.html")
+
 
 def add_to_cart(request, item_id):
     if request.method == 'POST':

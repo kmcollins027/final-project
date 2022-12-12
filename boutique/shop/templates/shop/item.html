@@ -10,7 +10,6 @@
         <div class="row gx-4 gx-lg-5 align-items-center">
             <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ item.image.url }}" alt="..." /></div>
             <div class="col-md-6">
-                <div class="small mb-1">ID: {{item.id}}</div>
                 <h1 class="display-5 fw-bolder">{{item.title}}</h1>
                 <div class="fs-5 mb-5">
                     <span>${{item.price}}</span>
@@ -19,17 +18,27 @@
                 <div class="d-flex">
                     <form id="add-to-cart-form" action="{% url 'add-to-cart' item.id %}" method="post">
                         {% csrf_token %}
+                    
+                    {% if user.is_authenticated %}
                     <input class="form-control text-center me-3" id="inputQuantity" name="inputQuantity" type="num" value="1" style="max-width: 3rem" />
                     <button id="add-to-cart-submit" class="btn btn-outline-dark flex-shrink-0" type="submit">
                         <i class="bi-cart-fill me-1"></i>
                         Add to cart
                     </button>
+                    {% else %}
+                    <input class="form-control text-center me-3" id="inputQuantity" name="inputQuantity" type="num" value="1" style="max-width: 3rem" disabled/>
+                    <button id="add-to-cart-submit" class="btn btn-outline-dark flex-shrink-0" type="submit" disabled>
+                        <i class="bi-cart-fill me-1"></i>
+                        Add to cart
+                    </button>
+                    {% endif %}
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </section>
+{% comment %}
 <!-- Related items section-->
 <section class="py-5 bg-light">
     <div class="container px-4 px-lg-5 mt-5">
@@ -136,5 +145,6 @@
         </div>
     </div>
 </section>
+{% endcomment %}
 
 {% endblock %}
