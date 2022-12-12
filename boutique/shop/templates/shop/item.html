@@ -17,7 +17,7 @@
                 </div>
                 <p class="lead">{{ item.description }}</p>
                 <div class="d-flex">
-                    <form id="add-to-cart-form" action="{% url 'api-add-to-cart' item.id %}" method="post">
+                    <form id="add-to-cart-form" action="{% url 'add-to-cart' item.id %}" method="post">
                         {% csrf_token %}
                     <input class="form-control text-center me-3" id="inputQuantity" name="inputQuantity" type="num" value="1" style="max-width: 3rem" />
                     <button id="add-to-cart-submit" class="btn btn-outline-dark flex-shrink-0" type="submit">

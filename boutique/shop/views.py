@@ -7,9 +7,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.core.mail import send_mail, BadHeaderError
 
 from .models import User, Item, Category, Cart
 from . import forms
+from .forms import ContactForm
 
 def index(request):
     return render(request, "shop/index.html", {"users": User.objects.all()})
@@ -54,7 +56,7 @@ def register(request):
     else:
         return render(request, "shop/register.html")
 
-@login_required(login_url='registration/login')
+@login_required(login_url='login')
 def account(request):
     return render(request, "shop/account.html")
 
@@ -153,6 +155,47 @@ def item(request, item_id):
 def review(request):
     return render(request, "shop/review.html")
 
+def add_to_cart(request, item_id):
+    if request.method == 'POST':
+        quantity = request.POST.get('inputQuantity')
+
+        item_listing = get_object_or_404(Item, pk=item_id)
+        Cart.objects.create(user=request.user, item_id=item_listing.id, quantity=quantity)
+
+        return HttpResponseRedirect(reverse("item", args=[item_id]))
+
+def remove_from_cart(request, item_id):
+    if request.method == "POST":
+        quantity = request.POST.get('inputQuantity')
+
+        item_listing = get_object_or_404(Cart, pk=item_id)
+        item_listing.delete()
+        return redirect(cart)
+
+def about(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = "Website Inquiry" 
+            body = {
+            'first_name': form.cleaned_data['first_name'], 
+            'last_name': form.cleaned_data['last_name'], 
+            'email': form.cleaned_data['email'], 
+            'message':form.cleaned_data['message'], 
+            }
+            message = "\n".join(body.values())
+
+            try:
+                send_mail(subject, message, 'djangoemail027@gmail.com', ['djangoemail027@gmail.com']) 
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            return redirect ("index")
+      
+    form = ContactForm()
+    return render(request, "shop/about.html", {'form':form})
+
+
+
 def api_add_to_cart(request, item_id):
     if request.method == 'POST':
         quantity = request.POST.get('inputQuantity')
@@ -177,6 +220,7 @@ def api_remove_from_cart(request, item_id):
         })
     return JsonResponse({'error': 'something went wrong'})
 
+@login_required(login_url='login')
 def cart(request):
     shopping_cart = Cart.objects.filter(user=request.user)
     cart = Item.objects.filter(id__in=shopping_cart)

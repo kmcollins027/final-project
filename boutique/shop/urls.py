@@ -28,6 +28,9 @@ urlpatterns = [
     path("item/<int:item_id>", views.item, name="item"),
     path("review", views.review, name="review"),
     path("cart", views.cart, name="cart"),
+    path("add_to_cart/<int:item_id>", views.add_to_cart, name="add-to-cart"),
+    path("remove_from_cart/<int:item_id>", views.remove_from_cart, name="remove-from-cart"),
+    path("about", views.about, name="about"),
 
     path("api/add_to_cart/<int:item_id>", views.api_add_to_cart, name="api-add-to-cart"),
     path("api/remove_from_cart/<int:item_id>", views.api_remove_from_cart, name="api-remove-from-cart"),
