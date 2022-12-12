@@ -27,6 +27,11 @@ urlpatterns = [
     path("create_item", views.CreateItem.as_view(), name="create-item"),
     path("item/<int:item_id>", views.item, name="item"),
     path("review", views.review, name="review"),
+    path("cart", views.cart, name="cart"),
+
+    path("api/add_to_cart/<int:item_id>", views.api_add_to_cart, name="api-add-to-cart"),
+    path("api/remove_from_cart/<int:item_id>", views.api_remove_from_cart, name="api-remove-from-cart"),
+    path("api/counters", views.api_counters, name="api-counters"),
 
 ]
 

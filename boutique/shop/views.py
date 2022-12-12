@@ -6,6 +6,7 @@ from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 from .models import User, Item, Category, Cart
 from . import forms
@@ -145,8 +146,49 @@ class CreateItem(CreateView):
 
 def item(request, item_id):
     item = get_object_or_404(Item, id=item_id)
-    #related_items = Item.objects.filter(categories=item.categories)
+    #cat = item.categories
+    #related_items = Item.objects.filter(categories_id=item.items)
     return render(request, "shop/item.html", {"item": item})
 
 def review(request):
     return render(request, "shop/review.html")
+
+def api_add_to_cart(request, item_id):
+    
+    quantity = request.POST.get('inputQuantity')
+    print(quantity)
+
+    item_listing = get_object_or_404(Item, pk=item_id)
+    Cart.objects.create(user=request.user, item_id=item_listing.id, quantity=quantity)
+    return JsonResponse({
+        'quantity': quantity,
+    })
+
+def api_remove_from_cart(request, item_id):
+    
+    quantity = request.POST.get('inputQuantity')
+    print(quantity)
+
+    item_listing = get_object_or_404(Cart, pk=item_id)
+    item_listing.delete()
+    return JsonResponse({
+        'quantity': quantity,
+    })
+
+def cart(request):
+    shopping_cart = Cart.objects.filter(user=request.user)
+    cart = Item.objects.filter(id__in=shopping_cart)
+    return render(request, "shop/cart.html", {
+        'shopping_cart': shopping_cart,
+        'cart': cart,
+        })
+
+
+def api_counters(request):
+    #user = request.user
+    counts = {'cart': Cart.objects.filter(user=request.user).count()}
+    #if user.is_authenticated:
+        #counts['my_listings'] = user.my_listings.all().count()
+        #counts['my_watches'] = user.watched_listings.all().count()
+    print(f'api_counters called. returning {counts}')
+    return JsonResponse(counts)

@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django import forms
 from django.core.validators import MinValueValidator
+from datetime import datetime
 
 class User(AbstractUser):
     image = models.ImageField(upload_to='images', default="No Image")
@@ -27,9 +28,23 @@ class Category(models.Model):
         return self.name
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name='shopping_cart')
+    date_ordered = models.DateTimeField(auto_now=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='cart', default=None)
-    total = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=0, null=True, blank=True)
+
+    def get_total(self):
+        total = self.item.price * self.quantity
+        return total
+
+    def get_image_url(self):
+        return self.item.image
+
+    def get_title(self):
+        return self.item.title
+
+    def get_price(self):
+        return self.item.price
 
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)

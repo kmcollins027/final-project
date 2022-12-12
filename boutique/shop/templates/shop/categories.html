@@ -7,9 +7,11 @@
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
             <h1 class="display-4 fw-bolder">Categories</h1>
+            {% if user.is_authenticated %}
             <button onclick=location.href="{% url 'create-category' %}">
                 New Category
             </button>
+            {% endif %}
         </div>
     </div>
 </header>

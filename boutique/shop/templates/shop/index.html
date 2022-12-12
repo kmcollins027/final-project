@@ -7,20 +7,12 @@
         <div class="text-center text-white">
             <h1 class="display-4 fw-bolder">Artisan Cheese</h1>
             {% if user.is_superuser %}
-                <a class="lead fw-normal text-blue-50 mb-0" href="{% url 'create-item' %}">Create Item</a>
-            {% else %}
-            {% if user.is_authenticated %}
-            Hello, Regular User
-            {% endif %}
+                <button onclick=location.href="{% url 'create-item' %}">Create Item</button>
             {% endif %}
         </div>
     </div>
 </header>
 
-{% for u in users %}
-{{u}} <br>
-
-{% endfor %}
 <!-- Section-->
 
 <section class="py-5">
