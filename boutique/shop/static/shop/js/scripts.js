@@ -11,7 +11,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     update_counters();
     add_to_cart();
-    //remove_from_cart();
+    remove_from_cart();
+    
+    
     //setInterval(update_counters, 5000);
 
     if (document.querySelector('.toggle_watchlist') != undefined) {
@@ -66,9 +68,9 @@ function update_counters() {
         //update_innerHTML('#ml', data['my_listings'])
         //update_innerHTML('#mw', data['my_watches'])
     })
-    //.catch(error => {
-        //console.log('**** api/counters error **', error);
-    //});
+    .catch(error => {
+        console.log('**** api/counters error **', error);
+    });
 }
 
 function update_innerHTML(element_id, value) {
@@ -79,19 +81,56 @@ function update_innerHTML(element_id, value) {
 
 function add_to_cart() {
     
+    if (document.querySelector('.add-to-cart-submit') != undefined){
+
     document.querySelector('#add-to-cart-form').onsubmit = ()=> {
         form = document.querySelector('#add-to-cart-form');
+        console.log(form)
+        const formData = new FormData(form);
+        fetch(form.action, {
+            method: "POST",
+            body: formData,
+            
+            
+        })
+        console.log(formData)
+        .then(response => {
+            console.log('add: got a response');
+            return response.json()})
+        .then(data => {
+            console.log(`add: data=${data}`)
+            update_counters();
+
+        })
+        .catch(error => {
+            console.log("*** api/error **", error);
+        })
+
+        //document.querySelector('#comment_text').value = ''
+        return false;
+    }
+}
+}
+
+function remove_from_cart() {
+    
+    
+    if (document.querySelector('.remove-from-cart-button') != undefined){
+        
+    document.querySelector('#remove-from-cart-form').onsubmit = ()=> {
+        form = document.querySelector('#remove-from-cart-form');
         const formData = new FormData(form);
         fetch(form.action, {
             method: "POST",
             body: formData,
             
         })
-
+        console.log(formData)
         .then(response => {
+            console.log('remove: got a response');
             return response.json()})
         .then(data => {
-
+            console.log(`remove: data=${data}`)
             update_counters();
 
         })
@@ -103,28 +142,4 @@ function add_to_cart() {
         return false;
     }
 }
-
-function remove_from_cart() {
-    
-    document.querySelector('#remove-from-cart-form').onsubmit = ()=> {
-        form = document.querySelector('#remove-from-cart-form');
-        const formData = new FormData(form);
-        fetch(form.action, {
-            method: "POST",
-            body: formData,
-            
-        })
-        .then(response => {
-            return response.json()})
-        .then(data => {
-            update_counters();
-
-        })
-        //.catch(error => {
-            //console.log("*** api/error **", error);
-        //})
-
-        //document.querySelector('#comment_text').value = ''
-        return false;
-    }
 }

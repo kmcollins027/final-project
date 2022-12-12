@@ -154,26 +154,28 @@ def review(request):
     return render(request, "shop/review.html")
 
 def api_add_to_cart(request, item_id):
-    
-    quantity = request.POST.get('inputQuantity')
-    print(quantity)
+    if request.method == 'POST':
+        quantity = request.POST.get('inputQuantity')
+        #print(quantity)
 
-    item_listing = get_object_or_404(Item, pk=item_id)
-    Cart.objects.create(user=request.user, item_id=item_listing.id, quantity=quantity)
-    return JsonResponse({
-        'quantity': quantity,
-    })
+        item_listing = get_object_or_404(Item, pk=item_id)
+        Cart.objects.create(user=request.user, item_id=item_listing.id, quantity=quantity)
+        return JsonResponse({
+            'quantity': quantity,
+        })
+    #return JsonResponse({'error': 'something went wrong'})
 
 def api_remove_from_cart(request, item_id):
-    
-    quantity = request.POST.get('inputQuantity')
-    print(quantity)
+    if request.method == "POST":
+        quantity = request.POST.get('inputQuantity')
+        #print(quantity)
 
-    item_listing = get_object_or_404(Cart, pk=item_id)
-    item_listing.delete()
-    return JsonResponse({
-        'quantity': quantity,
-    })
+        item_listing = get_object_or_404(Cart, pk=item_id)
+        item_listing.delete()
+        return JsonResponse({
+            'quantity': quantity,
+        })
+    return JsonResponse({'error': 'something went wrong'})
 
 def cart(request):
     shopping_cart = Cart.objects.filter(user=request.user)

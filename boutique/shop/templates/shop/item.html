@@ -20,7 +20,7 @@
                     <form id="add-to-cart-form" action="{% url 'api-add-to-cart' item.id %}" method="post">
                         {% csrf_token %}
                     <input class="form-control text-center me-3" id="inputQuantity" name="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                    <button class="btn btn-outline-dark flex-shrink-0" type="submit">
+                    <button id="add-to-cart-submit" class="btn btn-outline-dark flex-shrink-0" type="submit">
                         <i class="bi-cart-fill me-1"></i>
                         Add to cart
                     </button>
