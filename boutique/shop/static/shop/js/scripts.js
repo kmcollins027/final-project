@@ -99,7 +99,7 @@ function add_to_cart() {
             return response.json()})
         .then(data => {
             console.log(`add: data=${data}`)
-            update_counters();
+            //update_counters();
 
         })
         .catch(error => {
@@ -131,7 +131,7 @@ function remove_from_cart() {
             return response.json()})
         .then(data => {
             console.log(`remove: data=${data}`)
-            update_counters();
+            //update_counters();
 
         })
         //.catch(error => {

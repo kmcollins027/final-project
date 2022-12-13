@@ -156,11 +156,23 @@ class CreateItem(CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+class UpdateItem(UpdateView):
+    model = Item
+    template_name = 'shop/update_item.html'
+    fields = ['title', 'description', 'price', 'categories', 'image']
+    success_url = reverse_lazy('index')
+    
+    
 def item(request, item_id):
     item = get_object_or_404(Item, id=item_id)
-    #cat = item.categories
-    #related_items = Item.objects.filter(categories_id=item.items)
-    return render(request, "shop/item.html", {"item": item})
+    for category in item.categories.all():
+        category_id = Category.objects.get(id=category.id)
+        related_items = Item.objects.filter(categories=category_id)
+
+    return render(request, "shop/item.html", {"item": item, 
+                           "related_items": related_items,
+                           "save_id": item_id,
+                           })
 
 def review(request):
     return render(request, "shop/review.html")
@@ -238,14 +250,15 @@ def cart(request):
     return render(request, "shop/cart.html", {
         'shopping_cart': shopping_cart,
         'cart': cart,
+        'count': len(shopping_cart),
         })
 
 
 def api_counters(request):
-    #user = request.user
     counts = {'cart': Cart.objects.filter(user=request.user).count()}
-    #if user.is_authenticated:
-        #counts['my_listings'] = user.my_listings.all().count()
-        #counts['my_watches'] = user.watched_listings.all().count()
+    cart = Cart.objects.filter(user=request.user)
+    for item in cart:
+        counts['cart'] += (item.quantity - 1)
+
     print(f'api_counters called. returning {counts}')
     return JsonResponse(counts)

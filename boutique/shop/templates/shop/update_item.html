@@ -5,7 +5,7 @@
 <header class="bg-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Edit Profile</h1>
+            <h1 class="display-4 fw-bolder">Update Item</h1>
             <!-- <p class="lead fw-normal text-white-50 mb-0">Probably don't need</p> -->
         </div>
     </div>
@@ -14,7 +14,7 @@
 <p class="pads"></p>
 
 <div class="text-center">
-<form method="post" action="{% url 'update-account' %}" enctype="multipart/form-data">
+<form method="post" action="{% url 'update-item'  item.id %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Update">

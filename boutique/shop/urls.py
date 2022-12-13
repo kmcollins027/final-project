@@ -26,6 +26,7 @@ urlpatterns = [
     path("create_category", views.CategoryCreateView.as_view(), name="create-category"),
     path("create_item", views.CreateItem.as_view(), name="create-item"),
     path("item/<int:item_id>", views.item, name="item"),
+    path("update_item/<int:pk>", views.UpdateItem.as_view(), name="update-item"),
     path("review", views.review, name="review"),
     path("cart", views.cart, name="cart"),
     path("add_to_cart/<int:item_id>", views.add_to_cart, name="add-to-cart"),
